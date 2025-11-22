@@ -1,0 +1,93 @@
+[
+  {
+    "id": "green_line_glx_shuttle",
+    "label": "Green Line: Shuttle buses (North Station ↔ Union Square)",
+    "short_description": "Track work requiring shuttle replacement service between North Station and Union Square during peak hours.",
+    "mode": "light_rail",
+    "route_id": "Green-B",
+    "segment_start_stop_id": "place-north",
+    "segment_end_stop_id": "place-unsqu",
+    "severity": "major",
+    "reason": "track_work",
+    "expected_delay_minutes": 20,
+    "riders_estimated": 1200,
+    "default_actions": [
+      "Deploy shuttle buses between North Station and Union Square",
+      "Post real-time signage alerts at all affected stations",
+      "Advise riders toward Orange Line as alternative route"
+    ]
+  },
+  {
+    "id": "red_line_signal_harvard_central",
+    "label": "Red Line: Signal problem (Harvard ↔ Central)",
+    "short_description": "Signal failure causing 15-20 minute delays between Harvard and Central Square during peak hours.",
+    "mode": "subway",
+    "route_id": "Red",
+    "segment_start_stop_id": "place-harvd",
+    "segment_end_stop_id": "place-cntsq",
+    "severity": "moderate",
+    "reason": "signal_issue",
+    "expected_delay_minutes": 18,
+    "riders_estimated": 1800,
+    "default_actions": [
+      "Run express trains where possible through unaffected segments",
+      "Stage a spare train at Alewife for quick deployment",
+      "Send targeted push alerts to riders boarding north of Harvard"
+    ]
+  },
+  {
+    "id": "orange_line_partial_closure",
+    "label": "Orange Line: Partial closure with shuttle buses",
+    "short_description": "Partial Orange Line closure between Ruggles and Back Bay with shuttle bus replacement due to infrastructure work.",
+    "mode": "subway",
+    "route_id": "Orange",
+    "segment_start_stop_id": "place-rugg",
+    "segment_end_stop_id": "place-bbsta",
+    "severity": "major",
+    "reason": "infrastructure_work",
+    "expected_delay_minutes": 25,
+    "riders_estimated": 2000,
+    "default_actions": [
+      "Run high-frequency shuttle buses between Ruggles and Back Bay",
+      "Coordinate with traffic police for shuttle routing priority",
+      "Advise riders to transfer to Commuter Rail at Back Bay where possible"
+    ]
+  },
+  {
+    "id": "route1_mass_ave_detour",
+    "label": "Route 1: Mass Ave detour due to roadwork",
+    "short_description": "Route 1 buses detoured off Massachusetts Avenue due to emergency roadwork, adding 10-15 minutes and skipping several stops.",
+    "mode": "bus",
+    "route_id": "1",
+    "segment_start_stop_id": "mass_ave_midsegment",
+    "segment_end_stop_id": "mass_ave_bridge",
+    "severity": "minor",
+    "reason": "roadwork",
+    "expected_delay_minutes": 12,
+    "riders_estimated": 700,
+    "default_actions": [
+      "Post stop-specific detour alerts at all affected stops",
+      "Update trip planner and real-time info to reflect skipped stops",
+      "Recommend riders use nearby parallel routes (CT1, 47)"
+    ]
+  },
+  {
+    "id": "blue_line_train_disabled",
+    "label": "Blue Line: Disabled train at Aquarium",
+    "short_description": "Disabled train at Aquarium station causing service delays and single-tracking between Government Center and Airport.",
+    "mode": "subway",
+    "route_id": "Blue",
+    "segment_start_stop_id": "place-gover",
+    "segment_end_stop_id": "place-aport",
+    "severity": "major",
+    "reason": "disabled_train",
+    "expected_delay_minutes": 22,
+    "riders_estimated": 1500,
+    "default_actions": [
+      "Implement single-tracking around disabled train",
+      "Deploy tow equipment to remove disabled train",
+      "Alert riders to expect 20+ minute delays, suggest Green/Orange alternatives"
+    ]
+  }
+]
+

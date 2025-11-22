@@ -1,0 +1,40 @@
+{
+  "corridors": [
+    {
+      "id": "mbta_green_core",
+      "name": "MBTA Green Line Core",
+      "modes": ["light_rail"],
+      "routes": ["Green-B", "Green-C", "Green-D", "Green-E"],
+      "transfer_hubs": ["place-govt", "place-pktrm"],
+      "vulnerabilities": ["signal_congestion", "platform_crowding"],
+      "notes": "Core trunk through downtown with high transfer demand."
+    },
+    {
+      "id": "mbta_red_core",
+      "name": "MBTA Red Line Core",
+      "modes": ["subway"],
+      "routes": ["Red"],
+      "transfer_hubs": ["place-dwnxg", "place-pktrm"],
+      "vulnerabilities": ["signal_failures", "switch_issues"],
+      "notes": "North-south trunk with heavy commuter load."
+    }
+  ],
+  "rules": [
+    {
+      "id": "green_crowding_rule",
+      "description": "Green Line core becomes unstable when headway variance > 120 sec and events near TD Garden.",
+      "conditions": [
+        "corridor_id == 'mbta_green_core'",
+        "headway_variance_secs > 120",
+        "nearby_event == true"
+      ],
+      "suggested_actions": [
+        "dispatch_additional_trains",
+        "platform_crowd_control",
+        "pre_event_rider_alerts"
+      ]
+    }
+  ]
+}
+
+

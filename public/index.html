@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseOps - AI Incident Command</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🚇</div>
+                    <h1>PulseOps</h1>
+                </div>
+                <div class="header-subtitle">AI-Powered Transit Incident Management</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Service Reliability Snapshot -->
+            <section id="service-snapshot" class="card service-snapshot-card">
+                <div class="card-header">
+                    <h2>📊 Service Reliability (Last 30 minutes)</h2>
+                    <p class="card-subtitle">
+                        Continuous view of corridor performance, even when no incidents are active.
+                    </p>
+                </div>
+                <div class="service-snapshot-grid">
+                    <div class="snapshot-stat">
+                        <div class="label">On-time share</div>
+                        <div class="value" id="snapshot-ontime">--%</div>
+                        <div class="hint">Share of time delay ≤ 2 min</div>
+                    </div>
+                    <div class="snapshot-stat">
+                        <div class="label">Avg corridor delay</div>
+                        <div class="value" id="snapshot-avg-delay">-- min</div>
+                        <div class="hint">Last 30 minutes</div>
+                    </div>
+                    <div class="snapshot-stat">
+                        <div class="label">Rider delay-minutes</div>
+                        <div class="value" id="snapshot-rider-delay">--</div>
+                        <div class="hint">Estimated total impact</div>
+                    </div>
+                    <div class="snapshot-stat">
+                        <div class="label">Time in severe delay</div>
+                        <div class="value" id="snapshot-severe">--%</div>
+                        <div class="hint">Share of time delay &gt; 5 min</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mode Selector -->
+            <section class="mode-selector">
+                <div class="card">
+                    <div class="tabs">
+                        <button id="tab-simulated" class="tab-button active" data-mode="simulated">
+                            🎮 Simulated Mode
+                        </button>
+                        <button id="tab-live" class="tab-button" data-mode="gtfs_realtime">
+                            📡 Live GTFS-RT
+                        </button>
+                    </div>
+                    <div id="mode-description" class="mode-description">
+                        <strong>Simulated Mode:</strong> Test environment with controllable disruptions and delays
+                    </div>
+                </div>
+            </section>
+
+            <!-- Control Panel -->
+            <section class="control-panel">
+                <div class="card">
+                    <h2 id="control-panel-title">🎯 Simulation Controls</h2>
+                    <div id="simulated-controls" class="controls-layout">
+                        <div class="mbta-scenario-section">
+                            <label for="mbta-scenario-select" class="scenario-label">
+                                🚇 Test with real MBTA-style scenarios
+                            </label>
+                            <div class="scenario-row">
+                                <select id="mbta-scenario-select" class="scenario-select">
+                                    <option value="">Select a scenario…</option>
+                                </select>
+                                <button id="create-mbta-scenario-btn" class="btn btn-primary">
+                                    ➕ Create Scenario
+                                </button>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button id="triggerDisruption" class="btn btn-warning">
+                                ⚠️ Trigger Disruption
+                            </button>
+                            <button id="refreshIncidents" class="btn btn-secondary">
+                                🔄 Refresh List
+                            </button>
+                        </div>
+                    </div>
+                    <div id="live-controls" class="button-group" style="display: none;">
+                        <button id="refreshIncidentsLive" class="btn btn-secondary">
+                            🔄 Refresh Live Data
+                        </button>
+                    </div>
+                    <div id="mode-info" style="margin-top: 1rem; padding: 0.75rem; background: #fef3c7; border-radius: 0.5rem; font-size: 0.875rem; color: #92400e;">
+                        <strong>🤖 Autonomous Mode:</strong> The system automatically checks for disruptions every 10 seconds
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalIncidents">0</div>
+                        <div class="stat-label" id="totalIncidentsLabel">Total Incidents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="openIncidents">0</div>
+                        <div class="stat-label">Open</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalActions">0</div>
+                        <div class="stat-label">Actions Planned</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Risk Card -->
+            <section id="risk-card" class="card risk-card">
+                <div class="card-header">
+                    <h2>⚠️ Early Risk (Next 15 minutes)</h2>
+                    <p class="card-subtitle">
+                        Simple forecast of delay risk for this corridor.
+                    </p>
+                </div>
+                <div class="risk-body">
+                    <div class="risk-main">
+                        <div class="risk-label">Predicted delay</div>
+                        <div class="risk-value" id="risk-predicted-delay">-- min</div>
+                        <div class="risk-hint">
+                            Current: <span id="risk-current-delay">-- min</span>
+                        </div>
+                    </div>
+                    <div class="risk-score">
+                        <div class="risk-label">Risk score</div>
+                        <div class="risk-value" id="risk-score">--</div>
+                        <div class="risk-hint" id="risk-tags"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Incident Intelligence -->
+            <section id="incident-intel" class="card incident-intel-card">
+                <div class="card-header">
+                    <h2>📚 Incident Intelligence</h2>
+                    <p class="card-subtitle">
+                        Real-world disruptions and what agencies did in similar situations.
+                    </p>
+                </div>
+                <div id="incident-intel-body" class="incident-intel-body">
+                    <p class="incident-intel-empty">Loading real incident examples…</p>
+                </div>
+            </section>
+
+            <!-- Incidents List -->
+            <section class="incidents-section">
+                <div class="card">
+                    <h2 id="incidents-title">🚨 Simulated Incidents</h2>
+                    <div id="incidentsList" class="incidents-list">
+                        <div class="empty-state">
+                            <div class="empty-icon">📋</div>
+                            <p id="empty-message">No simulated incidents yet. Create one to get started!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Plan Display -->
+            <section id="actionPlanSection" class="action-plan-section" style="display: none;">
+                <div class="card">
+                    <div class="action-plan-header">
+                        <h2>🤖 AI Action Plan</h2>
+                        <button id="closeActionPlan" class="btn-close">✕</button>
+                    </div>
+                    <div id="actionPlanContent" class="action-plan-content">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Toast Notifications -->
+        <div id="toastContainer" class="toast-container"></div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>AI is analyzing the incident...</p>
+        </div>
+
+        <!-- Create Incident Modal -->
+        <div id="createIncidentModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>➕ Create Custom Incident</h2>
+                    <button id="closeModal" class="btn-close">✕</button>
+                </div>
+                <form id="createIncidentForm" class="modal-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="routeId">Route ID</label>
+                            <input type="text" id="routeId" name="routeId" value="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="severity">Severity</label>
+                            <select id="severity" name="severity" required>
+                                <option value="minor">Minor</option>
+                                <option value="major" selected>Major</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startStop">Start Stop ID</label>
+                            <input type="text" id="startStop" name="startStop" value="stop-100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endStop">End Stop ID</label>
+                            <input type="text" id="endStop" name="endStop" value="stop-120" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="delayMinutes">Average Delay (minutes)</label>
+                            <input type="number" id="delayMinutes" name="delayMinutes" value="15" min="0" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tripsImpacted">Trips Impacted</label>
+                            <input type="number" id="tripsImpacted" name="tripsImpacted" value="8" min="1" max="100" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ridersEstimated">Riders Estimated</label>
+                        <input type="number" id="ridersEstimated" name="ridersEstimated" value="240" min="1" max="10000" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancelModal" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Incident</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

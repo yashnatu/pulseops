@@ -1,0 +1,63 @@
+[
+  {
+    "id": "sample_weather_0",
+    "city": "Boston",
+    "agency": "MBTA",
+    "mode": "bus",
+    "scenario_type": "weather_blockage",
+    "corridor_type": "urban_trunk",
+    "time_of_day": "am_peak",
+    "weekday": "weekday",
+    "peak_delay_minutes": 25,
+    "duration_minutes": 120,
+    "riders_impacted": 450,
+    "actions_taken": [
+      "detours",
+      "rider alerts",
+      "real-time updates"
+    ],
+    "outcome_quality": "mixed",
+    "summary": "Major snowstorm caused significant delays on Route 1 bus service. MBTA deployed detours and provided real-time updates. Recovery took approximately 2 hours."
+  },
+  {
+    "id": "sample_signal_0",
+    "city": "New York",
+    "agency": "MTA",
+    "mode": "subway",
+    "scenario_type": "signal_failure",
+    "corridor_type": "core_subway",
+    "time_of_day": "pm_peak",
+    "weekday": "weekday",
+    "peak_delay_minutes": 35,
+    "duration_minutes": 90,
+    "riders_impacted": 2500,
+    "actions_taken": [
+      "shuttle buses",
+      "rider alerts",
+      "service adjustments"
+    ],
+    "outcome_quality": "good",
+    "summary": "Signal failure on the Red Line during evening rush hour. MTA quickly deployed shuttle buses and provided clear communication. Service restored within 90 minutes with minimal rider complaints."
+  },
+  {
+    "id": "sample_event_0",
+    "city": "San Francisco",
+    "agency": "SFMTA",
+    "mode": "light_rail",
+    "scenario_type": "event_crowding",
+    "corridor_type": "event_corridor",
+    "time_of_day": "pm_peak",
+    "weekday": "weekend",
+    "peak_delay_minutes": 15,
+    "duration_minutes": 180,
+    "riders_impacted": 1200,
+    "actions_taken": [
+      "extra trains",
+      "crowd management",
+      "rider alerts"
+    ],
+    "outcome_quality": "good",
+    "summary": "Major sporting event caused severe crowding on Muni Metro. SFMTA added extra trains and deployed staff for crowd management. Service handled increased demand effectively."
+  }
+]
+
